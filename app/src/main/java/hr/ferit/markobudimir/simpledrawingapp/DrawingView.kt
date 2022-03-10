@@ -47,8 +47,38 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val touchX = event?.x
+        val touchY = event?.y
 
+        when(event?.action){
+            MotionEvent.ACTION_DOWN ->{
+                drawPath!!.color = color
+                drawPath!!.brushThickness = brushSize
 
+                drawPath!!.reset()
+                if (touchX != null) {
+                    if (touchY != null) {
+                        drawPath!!.lineTo(touchX, touchY)
+                    }
+                }
+            }
+            MotionEvent.ACTION_MOVE ->{
+                if (touchX != null) {
+                    if (touchY != null) {
+                        drawPath!!.lineTo(touchX, touchY)
+                    }
+                }
+            }
+            MotionEvent.ACTION_UP ->{
+                drawPath = CustomPath(color, brushSize)
+            }
+            else -> return false
+        }
+        invalidate()
+
+        return true
+    }
 
     internal inner class CustomPath(var color: Int, var brushThickness: Float) : Path(){
 
