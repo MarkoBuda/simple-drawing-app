@@ -29,6 +29,13 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
+    fun onClickRedo() {
+        if (undoPaths.size > 0) {
+            paths.add(undoPaths.removeAt(undoPaths.size-1))
+            invalidate()
+        }
+    }
+
     private fun setUpDrawing() {
         drawPaint = Paint()
         drawPath = CustomPath(color, brushSize)
